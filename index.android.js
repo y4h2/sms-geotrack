@@ -9,13 +9,28 @@ import {
   AppRegistry,
   StyleSheet,
   Text,
-  View
+  View,
+  Navigator,
 } from 'react-native';
+
+
+import StartScreen from './components/StartScreen'
+import SmsListener from 'react-native-android-sms-listener'
+
+
 
 export default class smsGeotrack extends Component {
   render() {
     return (
-      <View style={styles.container}>
+     /*<Navigator 
+        initialRoute={{ name: 'StartScreen'}}
+      />*/
+
+
+      <StartScreen />
+
+    
+      /*<View style={styles.container}>
         <Text style={styles.welcome}>
           Welcome to React Native!
         </Text>
@@ -26,7 +41,7 @@ export default class smsGeotrack extends Component {
           Double tap R on your keyboard to reload,{'\n'}
           Shake or press menu button for dev menu
         </Text>
-      </View>
+      </View>*/
     );
   }
 }
