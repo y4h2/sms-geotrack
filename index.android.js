@@ -19,6 +19,7 @@ var SendIntentAndroid = require('react-native-send-intent');
 
 import StartScreen from './components/StartScreen'
 import SmsListener from 'react-native-android-sms-listener'
+import ContactsList from './components/ContactsList'
 
 var Contacts = require('react-native-contacts')
 
@@ -29,25 +30,22 @@ export default class smsGeotrack extends Component {
     SmsListener.addListener(message => {
       console.info(message)
     })
+    state = {
+      initialPosition: 'unknown',
+    };
   }
 
-  addContact() {
-    var newPerson = {
-      emailAddresses: [{
-        label: "work",
-        email: "yuhuang@example.com",
-      }],
-      familyName: "Huang",
-      givenName: "Yu",
-    }
-
-    Contacts.addContact(newPerson, (err) => { /*...*/ })
-
+  getLocation() {
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        var initialPosition = JSON.stringify(position);
+        this.setState({initialPosition});
+      },
+      (error) => alert(JSON.stringify(error)),
+      {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000}
+    );
   }
 
-  snedSms() {
-    SendIntentAndroid.sendSms('+1 6478929220', 'SMS body text here');
-  }
 
   render() {
     return (
@@ -56,13 +54,9 @@ export default class smsGeotrack extends Component {
       />*/
 
       <View>
-        <StartScreen />
-        <TouchableOpacity onPress={this.addContact}>
-          <Text>Add Contacts</Text>
-        </TouchableOpacity>
-        <TouchableOpacity>
-          
-        </TouchableOpacity>
+
+        <ContactsList />
+  
       </View>
 
     
