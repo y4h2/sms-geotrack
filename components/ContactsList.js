@@ -25,6 +25,7 @@ class ContactsList extends Component {
 
 		this.refreshContacts = this.refreshContacts.bind(this)
 		this.renderRow = this.renderRow.bind(this)
+
 	}
 
 	componentDidMount() {
@@ -44,8 +45,17 @@ class ContactsList extends Component {
 	
 
 	// send SMS to specific phone number
+	// data format
+	// {"lat": "12.2213", "lng": "32.2321", "command": "response"}
 	sendSms(phoneNumber) {
-    	SendIntentAndroid.sendSms(phoneNumber, 'SMS body text here');
+		var obj = {
+			"lat": this.props.lat, 
+			"lng": this.props.lng, 
+			"command": "response"
+		};
+		var message = JSON.stringify(obj);
+    	
+    	SendIntentAndroid.sendSms(phoneNumber, message);
   	}
 
   	// send SMS to multiple phone number
@@ -78,7 +88,6 @@ class ContactsList extends Component {
   			<View>
   				<View>
 	  				<TouchableOpacity 
-
 	  					onPress={()=>this.sendSms(phoneNumber)}>
 	  					<Text>{name}: {phoneNumber}</Text>
   					</TouchableOpacity>
