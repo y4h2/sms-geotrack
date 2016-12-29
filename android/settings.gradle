@@ -2,8 +2,14 @@ rootProject.name = 'smsGeotrack'
 
 include ':app'
 include ':react-native-android-sms-listener'
+include ':react-native-contacts'
+include ':RNSendIntentModule'
 
 project(':react-native-android-sms-listener').projectDir = new File(
   rootProject.projectDir,
   '../node_modules/react-native-android-sms-listener/android'
 )
+
+project(':react-native-contacts').projectDir = new File(settingsDir, '../node_modules/react-native-contacts/android')
+
+project(':RNSendIntentModule').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-send-intent/android')

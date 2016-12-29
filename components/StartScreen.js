@@ -7,8 +7,14 @@ import {
   TouchableOpacity,
 } from 'react-native';
 
-
+import SmsListener from 'react-native-android-sms-listener'
 class StartScreen extends Component {
+    constructor(props) {
+	    super(props);
+	    SmsListener.addListener(message => {
+	      console.info(message)
+	    })
+	  }
 	render() {
 		return (
 			<View>

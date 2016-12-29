@@ -1,6 +1,7 @@
 package com.smsgeotrack;
 
 import com.facebook.react.ReactActivity;
+import com.burnweb.rnsendintent.RNSendIntentPackage;
 
 public class MainActivity extends ReactActivity {
 
