@@ -12,14 +12,13 @@ import {
   View,
   Navigator,
   TouchableOpacity,
+  AsyncStorage,
 } from 'react-native';
 
 var SendIntentAndroid = require('react-native-send-intent');
 
-
-import StartScreen from './components/StartScreen'
 import SmsListener from 'react-native-android-sms-listener'
-import ContactsList from './components/ContactsList'
+import SmsSender from './components/SmsSender'
 import SmsParser from './components/SmsParser'
 
 var Contacts = require('react-native-contacts')
@@ -31,7 +30,8 @@ export default class smsGeotrack extends Component {
 
     this.state = {
       ownLat: "",
-      ownLng: ""
+      ownLng: "",
+      timestamp: "",
     }
   }
 
@@ -39,9 +39,11 @@ export default class smsGeotrack extends Component {
     navigator.geolocation.getCurrentPosition(
       (position)=>{
         this.setState({ownLat: position.coords.latitude});
-        this.setState({ownLng: position.coords.longitude})
+        this.setState({ownLng: position.coords.longitude});
+        this.setState({timestamp: String(position.timestamp)});
       }, (error)=> alert(JSON.stringify(error)), 
       {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000});
+
   }
 
 
@@ -50,13 +52,11 @@ export default class smsGeotrack extends Component {
 
       <View>
         <View>
-          <ContactsList lat={this.state.ownLat} lng={this.state.ownLng}/>
+          <SmsSender lat={this.state.ownLat} lng={this.state.ownLng} timestamp={this.state.timestamp}/>
         </View>
         <View>
           <SmsParser />
         </View>
-        <Text>{this.state.ownLat}</Text>
-        <Text>{this.state.ownLng}</Text>
       </View>
 
     

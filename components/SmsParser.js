@@ -5,6 +5,7 @@ import {
   View,
   Image,
   TouchableOpacity,
+  AsyncStorage,
 } from 'react-native';
 
 import SmsListener from 'react-native-android-sms-listener'
@@ -29,7 +30,8 @@ class SmsParser extends Component {
 			lng: "93.12332",
 			message: { body: '92.12312, 93.12332', originatingAddress: "123456789"},
 			command: "",
-			received: [],
+			timestamp: "",
+			receivedPosition: [],
 		}
 	}
 
@@ -41,7 +43,31 @@ class SmsParser extends Component {
 			var messageBody = message.body;
 			if (isJSON(messageBody)) {
 				var json = JSON.parse(messageBody);
-				this.setState({lat: json.lat, lng: json.lng, command: json.command});
+				this.setState({lat: json.lat, lng: json.lng, command: json.command, timestamp: json.timestamp});
+				
+				AsyncStorage.removeItem('receivedPosition');
+				AsyncStorage.getItem('receivedPosition', (err, result)=>{
+					var temp;
+					if (result) {
+						temp = JSON.parse(result);
+					} else {
+						temp = [];
+					}
+
+					temp.push({
+							label: message.originatingAddress,
+							lat: json.lat,
+							lng: json.lng,
+							timestamp: json.timestamp
+						});
+
+					this.setState({receivedPosition: JSON.stringify(temp)});
+
+					AsyncStorage.setItem('receivedPosition', JSON.stringify(temp));
+				}).then(()=>{
+					console.log(this.state.receivedPosition);
+				}).done();
+
 			}
 		});
 	}
@@ -68,6 +94,9 @@ class SmsParser extends Component {
 				</Text>
 				<Text>
 					command: {this.state.command}
+				</Text>
+				<Text>
+					{this.state.receivedPosition}
 				</Text>
 			</View>
 		)

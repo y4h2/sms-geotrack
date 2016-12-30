@@ -14,7 +14,7 @@ var SendIntentAndroid = require('react-native-send-intent');
 var ds = new ListView.DataSource({
 	rowHasChanged: (r1, r2) => r1 !== r2
 });
-class ContactsList extends Component {
+class SmsSender extends Component {
 	constructor (props) {
 		super(props)
 
@@ -36,7 +36,6 @@ class ContactsList extends Component {
 			if (err && err.type === 'permissionDenied') {
 				console.log("permissionDenied")
 			} else {
-				console.log(contacts);
 				this.setState({contacts: contacts});
 				// this.setState({dataSource: ds.cloneWithRows()})
 			}
@@ -51,6 +50,7 @@ class ContactsList extends Component {
 		var obj = {
 			"lat": this.props.lat, 
 			"lng": this.props.lng, 
+			"timestamp": this.props.timestamp,
 			"command": "response"
 		};
 		var message = JSON.stringify(obj);
@@ -134,4 +134,4 @@ const styles = StyleSheet.create({
 	}
 });
 
-export default ContactsList
+export default SmsSender
